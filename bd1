@@ -1,0 +1,84 @@
+tar -xvf hadoop-3.1.2.tar.gz 
+
+gedit .bashrc
+
+ # Hadoop paths
+export HADOOP_HOME=$AIKTC/hadoop-3.1.2
+export HADOOP_CONF_DIR=$AIKTC/hadoop-3.1.2/etc/hadoop
+export HADOOP_MAPRED_HOME=$AIKTC/hadoop-3.1.2
+export HADOOP_COMMON_HOME=$AIKTC/hadoop-3.1.2
+export HADOOP_HDFS_HOME=$AIKTC/hadoop-3.1.2
+export YARN_HOME=$AIKTC/hadoop-3.1.2
+export PATH=$PATH:$AIKTC/hadoop-3.1.2
+
+
+gedit hadoop-3.1.2/etc/hadoop/hadoop-env.sh
+ un comment java variable
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+
+
+
+hadoop-3.1.2/etc/hadoop$ gedit core-site.xml
+
+<property>
+<name>fs.default.name</name>
+<value>hdfs://localhost:9000</value>
+</property>
+
+hadoop-3.1.2/etc/hadoop$ gedit hdfs-site.xml
+<property>
+<name>dfs.replication</name>
+<value>1</value>
+</property>
+<property>
+<name>dfs.permission</name>
+<value>false</value>
+</property>
+
+hadoop-3.1.2/etc/hadoop$ gedit mapred-site.xml
+<property>
+<name>mapreduce.framework.name</name>
+<value>yarn</value>
+</property>
+
+hadoop-3.1.2/etc/hadoop$ gedit yarn-site.xml
+<property>
+<name>yarn.nodemanager.aux-services</name>
+<value>mapreduce_shuffle</value>
+</property>
+<property>
+<name>yarn.nodemanager.auxservices.mapreduce.shuffle.class</name>
+<value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+hadoop-3.1.2/etc/hadoop$ hadoop
+
+hdfs namenode -format
+WARNING: /home/aiktc/hadoop-3.1.2/logs does not exist. Creating.
+2019-07-10 11:45:35,216 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = aiktc18/127.0.1.1
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 3.1.2
+
+
+cd hadoop-3.1.2/sbin
+
+./start-all.sh
+WARNING: Attempting to start all Apache Hadoop daemons as aiktc in 10 seconds.
+WARNING: This is not a recommended production deployment configuration.
+WARNING: Use CTRL-C to abort.
+Starting namenodes on [localhost]
+localhost: Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
+localhost: aiktc@localhost: Permission denied (publickey,password).
+Starting datanodes
+localhost: aiktc@localhost: Permission denied (publickey,password).
+Starting secondary namenodes [aiktc18]
+aiktc18: Warning: Permanently added 'aiktc18' (ECDSA) to the list of known hosts.
+aiktc18: aiktc@aiktc18: Permission denied (publickey,password).
+Starting resourcemanager
+Starting nodemanagers
+localhost: aiktc@localhost: Permission denied (publickey,password).
+
+
